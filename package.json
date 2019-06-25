@@ -1,0 +1,25 @@
+{
+  "name": "oops-files",
+  "version": "1.0.0",
+  "description": "rename files based on content",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest --verbose"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jwmcconnell/oops-files.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jwmcconnell/oops-files/issues"
+  },
+  "homepage": "https://github.com/jwmcconnell/oops-files#readme",
+  "devDependencies": {
+    "eslint": "^6.0.1",
+    "jest": "^24.8.0"
+  }
+}
