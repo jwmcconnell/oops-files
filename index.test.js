@@ -23,7 +23,7 @@ describe('getFileContent', () => {
 });
 
 describe('getFileInfo', () => {
-  it('get the stats for a specific file', done => {
+  it('gets the stats for a specific file', done => {
     getFileInfo(join(__dirname, 'test-files', '1.txt'), (err, data) => {
       expect(err).toBeFalsy();
       expect(data.toISOString()).toEqual('2019-06-25T23:40:28.358Z');
