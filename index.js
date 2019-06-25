@@ -21,4 +21,10 @@ const getFileContent = (src, callback) => {
   });
 };
 
-module.exports = { getFiles, getFileContent };
+const getFileInfo = (src, callback) => {
+  fs.stat(src, (err, data) => {
+    callback(err, data.mtime);
+  });
+};
+
+module.exports = { getFiles, getFileContent, getFileInfo };
