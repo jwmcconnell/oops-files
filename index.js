@@ -15,4 +15,10 @@ const getFiles = (src, callback) => {
   });
 };
 
-module.exports = { getFiles };
+const getFileContent = (src, callback) => {
+  fs.readFile(src, { encoding: 'utf8' }, (err, data) => {
+    callback(err, data);
+  });
+};
+
+module.exports = { getFiles, getFileContent };
