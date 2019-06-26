@@ -10,7 +10,6 @@
 const fs = require('fs');
 const { join, parse } = require('path');
 
-
 const getFiles = (src, callback) => {
   fs.readdir(src, callback);
 };
