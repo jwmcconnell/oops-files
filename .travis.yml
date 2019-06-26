@@ -2,5 +2,5 @@ language: node_js
 node_js: node
 before_script:
   - npm i eslint esm
-  script:
+script:
   - npx eslint .
