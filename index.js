@@ -8,6 +8,8 @@
 */
 
 const fs = require('fs');
+const { join, parse } = require('path');
+
 
 const getFiles = (src, callback) => {
   fs.readdir(src, (err, data) => {
@@ -23,7 +25,7 @@ const getFileContent = (src, callback) => {
 
 const getFileInfo = (src, callback) => {
   fs.stat(src, (err, data) => {
-    callback(err, data.mtime);
+    callback(err, data.mtime.toISOString());
   });
 };
 
@@ -32,5 +34,27 @@ const renameFile = (src, dest, callback) => {
     callback(err);
   });
 };
+
+const renameFiles = (src) => {
+  getFiles(src, (err, files) => {
+    if(err) console.error(err);
+
+    files.forEach(file => {
+      getFileContent(join(src, file), (err, content) => {
+        if(err) console.error(err);
+
+        getFileInfo(join(src, file), (err, date) => {
+          if(err) console.error(err);
+
+          renameFile(join(src, file), join(src, content + '-' + parse(file).name + '-' + date), (err) => {
+            if(err) console.error(err);
+          });
+        });
+      });
+    });
+  });
+}; 
+
+renameFiles(join(__dirname, 'test-files'));
 
 module.exports = { getFiles, getFileContent, getFileInfo, renameFile };
