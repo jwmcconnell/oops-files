@@ -11,23 +11,28 @@ const { join, parse } = require('path');
 
 describe('getFiles', () => {
   beforeEach(done => {
-    fs.writeFile(join(__dirname, 'get-files-test', '1.txt'), 'goblin', done);
-    fs.writeFile(join(__dirname, 'get-files-test', '2.txt'), 'dragon', done);
-    fs.writeFile(join(__dirname, 'get-files-test', '3.txt'), 'shade', done);
-    fs.writeFile(join(__dirname, 'get-files-test', '4.txt'), 'bandit', done);
+    const contents = ['goblin', 'dragon', 'shade', 'bandit'];
+    let createdCount = 0;
+    contents.forEach((content, i) => {
+      fs.writeFile(join(__dirname, 'get-files-test', i + '.txt'), content, err => {
+        if(err) return done(err);
+        createdCount++;
+        if(createdCount === contents.length) done();
+      });
+    });
   });
 
   afterEach(done => {
+    fs.unlink(join(__dirname, 'get-files-test', '0.txt'), done);
     fs.unlink(join(__dirname, 'get-files-test', '1.txt'), done);
     fs.unlink(join(__dirname, 'get-files-test', '2.txt'), done);
     fs.unlink(join(__dirname, 'get-files-test', '3.txt'), done);
-    fs.unlink(join(__dirname, 'get-files-test', '4.txt'), done);
   });
   
   it('gets all files from a specific src', done => {
     getFiles(join(__dirname, 'get-files-test'), (err, data) => {
       expect(err).toBeFalsy();
-      expect(data).toEqual(['1.txt', '2.txt', '3.txt', '4.txt']);
+      expect(data).toEqual(['0.txt', '1.txt', '2.txt', '3.txt']);
       done();
     });
   });
