@@ -12,15 +12,11 @@ const { join, parse } = require('path');
 
 
 const getFiles = (src, callback) => {
-  fs.readdir(src, (err, data) => {
-    callback(err, data);
-  });
+  fs.readdir(src, callback);
 };
 
 const getFileContent = (src, callback) => {
-  fs.readFile(src, { encoding: 'utf8' }, (err, data) => {
-    callback(err, data);
-  });
+  fs.readFile(src, { encoding: 'utf8' }, callback);
 };
 
 const getFileInfo = (src, callback) => {
@@ -30,9 +26,7 @@ const getFileInfo = (src, callback) => {
 };
 
 const renameFile = (src, dest, callback) => {
-  fs.rename(src, dest, (err) => {
-    callback(err);
-  });
+  fs.rename(src, dest, callback);
 };
 
 const renameFiles = (src, callback) => {
