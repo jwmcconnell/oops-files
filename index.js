@@ -40,6 +40,7 @@ const renameFiles = (src) => {
     if(err) console.error(err);
 
     files.forEach(file => {
+
       getFileContent(join(src, file), (err, content) => {
         if(err) console.error(err);
 
@@ -53,8 +54,6 @@ const renameFiles = (src) => {
       });
     });
   });
-}; 
-
-renameFiles(join(__dirname, 'test-files'));
+};
 
 module.exports = { getFiles, getFileContent, getFileInfo, renameFile };
