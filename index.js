@@ -25,7 +25,7 @@ const getFileContent = (src, callback) => {
 
 const getFileInfo = (src, callback) => {
   fs.stat(src, (err, data) => {
-    callback(err, data.mtime.toISOString());
+    callback(err, data && data.mtime.toISOString());
   });
 };
 
