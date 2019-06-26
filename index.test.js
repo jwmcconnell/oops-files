@@ -77,6 +77,7 @@ describe('renameFile', () => {
       expect(err).toBeFalsy();
 
       fs.readFile(join(__dirname, 'dino.txt'), { encoding: 'utf8' }, (err, content) => {
+        expect(err).toBeFalsy();
         expect(content).toEqual('dino');
         done();
       });
