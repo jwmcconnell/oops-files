@@ -13,11 +13,14 @@ describe('getFiles', () => {
   beforeEach(done => {
     const contents = ['goblin', 'dragon', 'shade', 'bandit'];
     let createdCount = 0;
-    contents.forEach((content, i) => {
-      fs.writeFile(join(__dirname, 'get-files-test', i + '.txt'), content, err => {
-        if(err) return done(err);
-        createdCount++;
-        if(createdCount === contents.length) done();
+    fs.mkdir('./get-files-test', (err) => {
+      if(err) return done(err);
+      contents.forEach((content, i) => {
+        fs.writeFile(join(__dirname, 'get-files-test', i + '.txt'), content, err => {
+          if(err) return done(err);
+          createdCount++;
+          if(createdCount === contents.length) done();
+        });
       });
     });
   });
@@ -29,7 +32,7 @@ describe('getFiles', () => {
         fs.unlink(join(__dirname, 'get-files-test', file), err => {
           if(err) return done(err);
           deletedSoFar++;
-          if(deletedSoFar === data.length) done();
+          if(deletedSoFar === data.length) fs.rmdir('./get-files-test', done);
         });
       });
     });
@@ -106,23 +109,27 @@ describe('renameFiles', () => {
   beforeEach(done => {
     const contents = ['goblin', 'dragon', 'shade', 'bandit'];
     let createdCount = 0;
-    contents.forEach((content, i) => {
-      fs.writeFile(join(__dirname, 'rename-files-test', i + '.txt'), content, err => {
-        if(err) return done(err);
-        createdCount++;
-        if(createdCount === contents.length) done();
+    fs.mkdir('./rename-files-test', (err) => {
+      if(err) return done(err);
+      contents.forEach((content, i) => {
+        fs.writeFile(join(__dirname, 'rename-files-test', i + '.txt'), content, err => {
+          if(err) return done(err);
+          createdCount++;
+          if(createdCount === contents.length) done();
+        });
       });
     });
   });
 
   afterEach(done => {
+    
     getFiles(join(__dirname, 'rename-files-test'), (err, data) => {
       let deletedSoFar = 0;
       data.forEach(file => {
         fs.unlink(join(__dirname, 'rename-files-test', file), err => {
           if(err) return done(err);
           deletedSoFar++;
-          if(deletedSoFar === data.length) done();
+          if(deletedSoFar === data.length) fs.rmdir('./rename-files-test', done);
         });
       });
     });
