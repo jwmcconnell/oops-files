@@ -98,10 +98,15 @@ describe('renameFile', () => {
 
 describe('renameFiles', () => {
   beforeEach(done => {
-    fs.writeFile(join(__dirname, 'rename-files-test', '1.txt'), 'goblin', done);
-    fs.writeFile(join(__dirname, 'rename-files-test', '2.txt'), 'dragon', done);
-    fs.writeFile(join(__dirname, 'rename-files-test', '3.txt'), 'shade', done);
-    fs.writeFile(join(__dirname, 'rename-files-test', '4.txt'), 'bandit', done);
+    const contents = ['goblin', 'dragon', 'shade', 'bandit'];
+    let createdCount = 0;
+    contents.forEach((content, i) => {
+      fs.writeFile(join(__dirname, 'rename-files-test', i + '.txt'), content, err => {
+        if(err) return done(err);
+        createdCount++;
+        if(createdCount === contents.length) done();
+      });
+    });
   });
 
   afterEach(done => {
