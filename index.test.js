@@ -24,8 +24,16 @@ describe('getFileContent', () => {
 });
 
 describe('getFileInfo', () => {
+  beforeEach(done => {
+    fs.writeFile(join(__dirname, 'time-test.txt'), 'time test file', done);
+  });
+
+  afterEach(done => {
+    fs.unlink(join(__dirname, 'time-test.txt'), done);
+  });
+
   it('gets the stats for a specific file', done => {
-    getFileInfo(join(__dirname, 'test-files', '1.txt'), (err, data) => {
+    getFileInfo(join(__dirname, 'time-test.txt'), (err, data) => {
       expect(err).toBeFalsy();
       expect(data).toEqual(expect.any(String));
       done();
