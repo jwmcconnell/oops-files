@@ -14,8 +14,16 @@ describe('getFiles', () => {
 }); 
 
 describe('getFileContent', () => {
+  beforeEach(done => {
+    fs.writeFile(join(__dirname, 'content-test.txt'), 'goblin', done);
+  });
+
+  afterEach(done => {
+    fs.unlink(join(__dirname, 'content-test.txt'), done);
+  });
+
   it('gets the content for a specific file', done => {
-    getFileContent(join(__dirname, 'test-files', '1.txt'), (err, data) => {
+    getFileContent(join(__dirname, 'content-test.txt'), (err, data) => {
       expect(err).toBeFalsy();
       expect(data).toEqual('goblin');
       done();
