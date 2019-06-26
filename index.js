@@ -27,4 +27,10 @@ const getFileInfo = (src, callback) => {
   });
 };
 
-module.exports = { getFiles, getFileContent, getFileInfo };
+const renameFile = (src, dest, callback) => {
+  fs.rename(src, dest, (err) => {
+    callback(err);
+  });
+};
+
+module.exports = { getFiles, getFileContent, getFileInfo, renameFile };

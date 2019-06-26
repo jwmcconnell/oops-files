@@ -1,5 +1,6 @@
-const { getFiles, getFileContent, getFileInfo } = require('./index');
+const { getFiles, getFileContent, getFileInfo, renameFile } = require('./index');
 
+const fs = require('fs');
 const { join } = require('path');
 
 describe('getFiles', () => {
@@ -28,6 +29,27 @@ describe('getFileInfo', () => {
       expect(err).toBeFalsy();
       expect(data.toISOString()).toEqual('2019-06-25T23:40:28.358Z');
       done();
+    });
+  });
+});
+
+describe('renameFile', () => {
+  beforeEach(done => {
+    fs.writeFile(join(__dirname, 'test.txt'), 'dino', done);
+  });
+
+  afterEach(done => {
+    fs.unlink(join(__dirname, 'dino.txt'), done);
+  });
+  
+  it('renames the given file to the desired name', done => {
+    renameFile(join(__dirname, 'test.txt'), join(__dirname, 'dino.txt'), err => {
+      expect(err).toBeFalsy();
+      
+      fs.readFile(join(__dirname, 'dino.txt'), { encoding: 'utf8' }, (err, content) => {
+        expect(content).toEqual('dino');
+        done();
+      });
     });
   });
 });
