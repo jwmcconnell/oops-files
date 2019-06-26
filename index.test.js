@@ -23,10 +23,16 @@ describe('getFiles', () => {
   });
 
   afterEach(done => {
-    fs.unlink(join(__dirname, 'get-files-test', '0.txt'), done);
-    fs.unlink(join(__dirname, 'get-files-test', '1.txt'), done);
-    fs.unlink(join(__dirname, 'get-files-test', '2.txt'), done);
-    fs.unlink(join(__dirname, 'get-files-test', '3.txt'), done);
+    getFiles(join(__dirname, 'get-files-test'), (err, data) => {
+      let deletedSoFar = 0;
+      data.forEach(file => {
+        fs.unlink(join(__dirname, 'get-files-test', file), err => {
+          if(err) return done(err);
+          deletedSoFar++;
+          if(deletedSoFar === data.length) done();
+        });
+      });
+    });
   });
   
   it('gets all files from a specific src', done => {
