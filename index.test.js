@@ -4,8 +4,22 @@ const fs = require('fs');
 const { join } = require('path');
 
 describe('getFiles', () => {
+  beforeEach(done => {
+    fs.writeFile(join(__dirname, 'get-files-test', '1.txt'), 'goblin', done);
+    fs.writeFile(join(__dirname, 'get-files-test', '2.txt'), 'dragon', done);
+    fs.writeFile(join(__dirname, 'get-files-test', '3.txt'), 'shade', done);
+    fs.writeFile(join(__dirname, 'get-files-test', '4.txt'), 'bandit', done);
+  });
+
+  afterEach(done => {
+    fs.unlink(join(__dirname, 'get-files-test', '1.txt'), done);
+    fs.unlink(join(__dirname, 'get-files-test', '2.txt'), done);
+    fs.unlink(join(__dirname, 'get-files-test', '3.txt'), done);
+    fs.unlink(join(__dirname, 'get-files-test', '4.txt'), done);
+  });
+  
   it('gets all files from a specific src', done => {
-    getFiles(join(__dirname, 'test-files'), (err, data) => {
+    getFiles(join(__dirname, 'get-files-test'), (err, data) => {
       expect(err).toBeFalsy();
       expect(data).toEqual(['1.txt', '2.txt', '3.txt', '4.txt']);
       done();
