@@ -35,20 +35,25 @@ const renameFile = (src, dest, callback) => {
   });
 };
 
-const renameFiles = (src) => {
+const renameFiles = (src, callback) => {
   getFiles(src, (err, files) => {
-    if(err) console.error(err);
+    if(err) return callback(err);
+
+    let renamedSoFar = 0;
 
     files.forEach(file => {
 
       getFileContent(join(src, file), (err, content) => {
-        if(err) console.error(err);
+        if(err) return callback(err);
 
         getFileInfo(join(src, file), (err, date) => {
-          if(err) console.error(err);
+          if(err) return callback(err);
 
           renameFile(join(src, file), join(src, content + '-' + parse(file).name + '-' + date), (err) => {
-            if(err) console.error(err);
+            if(err) return callback(err);
+            
+            renamedSoFar++;
+            if(renamedSoFar === files.length) callback();
           });
         });
       });
@@ -56,4 +61,4 @@ const renameFiles = (src) => {
   });
 };
 
-module.exports = { getFiles, getFileContent, getFileInfo, renameFile };
+module.exports = { getFiles, getFileContent, getFileInfo, renameFile, renameFiles };

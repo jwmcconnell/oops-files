@@ -1,7 +1,13 @@
-const { getFiles, getFileContent, getFileInfo, renameFile } = require('./index');
+const { 
+  getFiles, 
+  getFileContent, 
+  getFileInfo, 
+  renameFile, 
+  renameFiles 
+} = require('./index');
 
 const fs = require('fs');
-const { join } = require('path');
+const { join, parse } = require('path');
 
 describe('getFiles', () => {
   beforeEach(done => {
@@ -81,6 +87,54 @@ describe('renameFile', () => {
         expect(content).toEqual('dino');
         done();
       });
+    });
+  });
+});
+
+describe('renameFiles', () => {
+  beforeEach(done => {
+    fs.writeFile(join(__dirname, 'rename-files-test', '1.txt'), 'goblin', done);
+    fs.writeFile(join(__dirname, 'rename-files-test', '2.txt'), 'dragon', done);
+    fs.writeFile(join(__dirname, 'rename-files-test', '3.txt'), 'shade', done);
+    fs.writeFile(join(__dirname, 'rename-files-test', '4.txt'), 'bandit', done);
+  });
+
+  afterEach(done => {
+    getFiles(join(__dirname, 'rename-files-test'), (err, data) => {
+      let deletedSoFar = 0;
+      data.forEach(file => {
+        fs.unlink(join(__dirname, 'rename-files-test', file), err => {
+          if(err) return done(err);
+          deletedSoFar++;
+          if(deletedSoFar === data.length) done();
+        });
+      });
+    });
+  });
+
+  it('renames all files in a specified directory', done => {
+    renameFiles(join(__dirname, 'rename-files-test'), (err) => {
+      expect(err).toBeFalsy();
+
+      getFiles(join(__dirname, 'rename-files-test'), (err, files) => {
+        expect(err).toBeFalsy();
+        let testedSoFar = 0;
+
+        files.forEach(file => {
+
+          getFileContent(join(__dirname, 'rename-files-test', file), (err, data) => {
+            const fileName = parse(file).name;
+            const dataInName = fileName.includes(data);
+
+            expect(err).toBeFalsy();
+            expect(dataInName).toBe(true);
+
+            testedSoFar++;
+            if(testedSoFar === files.length) done();
+          });
+        });
+      });
+
     });
   });
 });
